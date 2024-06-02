@@ -1,0 +1,1 @@
+I'd like to work towards automating the process. Original thought was to retrieve the `achievement_count` from the site, (they provide that for us) but I'm having issues trying to retrieving that `HTML` information.

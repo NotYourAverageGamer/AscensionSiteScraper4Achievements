@@ -19,7 +19,7 @@ def get_achievement_name(achievement_id):
     return None
 
 # Specify the range of achievement IDs to scrape
-START_ID = 14597  # Starting ID
+START_ID = 1  # Starting ID
 END_ID = 24597  # Ending ID
 
 # Dictionary to store achievement IDs and names

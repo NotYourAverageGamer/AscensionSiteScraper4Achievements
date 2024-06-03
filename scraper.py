@@ -18,15 +18,26 @@ def get_achievement_name(achievement_id):
     """
     base_url = "https://db.ascension.gg/?achievement="
     url = f"{base_url}{achievement_id}"
-    response = requests.get(url, timeout=10)
-    if response.status_code == 200:
-        soup = BeautifulSoup(response.text, 'html.parser')
-        title_element = soup.find('h1')  # Look for any <h1> tag
-        if title_element:
-            achievement_name = title_element.text.strip()
-            return achievement_name
-    else:
-        print(f"Failed to get achievement {achievement_id}: Status code {response.status_code}")
+
+    try:
+        response = requests.get(url, timeout=10)
+        if response.status_code == 200:
+            soup = BeautifulSoup(response.text, 'html.parser')
+            title_element = soup.find('h1')  # Look for any <h1> tag
+            if title_element:
+                achievement_name = title_element.text.strip()
+                return achievement_name
+        elif response.status_code == 503:
+            soup = BeautifulSoup(response.text, 'html.parser')
+            maintenance_message = soup.find('h1')
+            if maintenance_message and "Ascension DB under maintenance" in maintenance_message.text:
+                print("Maintenance detected. Waiting for 15 minutes before retrying...")
+                return "maintenance"
+        else:
+            print(f"Failed to get achievement {achievement_id}: Status code {response.status_code}")
+    except requests.exceptions.RequestException as e:
+        print(f"Request exception for achievement {achievement_id}: {e}")
+
     return None
 
 def scrape_and_save_achievements(start_id, end_id):
@@ -34,38 +45,47 @@ def scrape_and_save_achievements(start_id, end_id):
     Scrape achievement names within a given range and save them to a CSV file.
 
     Parameters:
-    - START_ID (int): The starting ID of the achievement range to scrape.
-    - END_ID (int): The ending ID of the achievement range to scrape.
+    - start_id (int): The starting ID of the achievement range to scrape.
+    - end_id (int): The ending ID of the achievement range to scrape.
     """
     # Dictionary to store achievement IDs and names
     achievements = {}
 
-    for achievement_id in range(start_id, end_id + 1):
+    achievement_id = start_id
+    while achievement_id <= end_id:
         name = get_achievement_name(achievement_id)
-        if name:
+        if name == "maintenance":
+            time.sleep(15 * 60)
+            continue  # Retry the same achievement_id after the wait
+        elif name:
             achievements[achievement_id] = name
             print(f"Found achievement: ID = {achievement_id}, Name = {name}")
-            # Convert to DataFrame for easy manipulation and saving
-            df = pd.DataFrame(list(achievements.items()), columns=['ID', 'Name'])
-
-            # Save to a CSV file
-            try:
-                df.to_csv('achievements.csv', index=False)
-                print("Achievement saved to achievements.csv")
-            except FileNotFoundError as e:
-                print(f"File not found error: {e}")
-            except PermissionError as e:
-                print(f"Permission error: {e}")
-            except IOError as e:
-                print(f"IO error: {e}")
         else:
             print(f"No achievement found for ID = {achievement_id}")
+
+        # Convert to DataFrame for easy manipulation and saving
+        df = pd.DataFrame(list(achievements.items()), columns=['ID', 'Name'])
+
+        # Save to a CSV file
+        try:
+            df.to_csv('achievements.csv', index=False)
+            print("Achievements saved to achievements.csv")
+        except FileNotFoundError as e:
+            print(f"File not found error: {e}")
+        except PermissionError as e:
+            print(f"Permission error: {e}")
+        except IOError as e:
+            print(f"IO error: {e}")
+
         # Sleep to avoid overloading the server
         time.sleep(1)
 
+        # Move to the next achievement ID
+        achievement_id += 1
+
 # Specify the range of achievement IDs to scrape
-START_ID = 1
-END_ID = 25000
+START_ID = 18936
+END_ID = 35000
 
 # Call the function to scrape and save achievements
 scrape_and_save_achievements(START_ID, END_ID)

@@ -11,7 +11,7 @@
 
 ## Usage
 
-1. **Installation**: Clone the repository or download the script (`ascension_site_scraper.py`) to your local machine.
+1. **Installation**: Clone the repository or download the script (`scraper.py`) to your local machine.
 
 2. **Dependencies**: Ensure you have Python installed on your system along with the required libraries (`requests`, `beautifulsoup4`, and `pandas`). You can install these dependencies using pip:
 
@@ -19,15 +19,11 @@
    pip install requests beautifulsoup4 pandas
    ```
 
-3. **Execution**: Run the script in your Python environment. The achievements will be scraped and saved into a CSV file named `ascension_achievements.csv` in the directory where the script is executed.
-
-   ```
-   python ascension_site_scraper.py
-   ```
+3. **Execution**: Run the script in your Python environment. This varies from device to device so i cannot provide instructions at this time. The achievements will be scraped and saved to a CSV file named `achievements.csv` in the directory where the script is executed.
 
 ## Configuration
 
-- **Range of IDs**: By default, the script fetches achievement names and IDs for a predefined range (from ID 1 to 24597). You can adjust this range by modifying the `START_ID` and `END_ID` variables in the script.
+- **Range of IDs**: By default, the script fetches achievement names and IDs for a predefined range (1-35000). You can adjust this range by modifying the `START_ID` and `END_ID` variables in the script.
 
 ## Contributions
 

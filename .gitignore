@@ -2,3 +2,5 @@
 .DS_Store
 test.py
 old_scraper.py
+run.bat
+run.sh

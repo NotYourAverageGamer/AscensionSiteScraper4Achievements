@@ -20,7 +20,7 @@ def get_achievement_name(achievement_id):
     url = f"{base_url}{achievement_id}"
 
     try:
-        response = requests.get(url, timeout=10)
+        response = requests.get(url, timeout=30)
         if response.status_code == 200:
             soup = BeautifulSoup(response.text, 'html.parser')
             title_element = soup.find('h1')  # Look for any <h1> tag
@@ -31,7 +31,7 @@ def get_achievement_name(achievement_id):
             soup = BeautifulSoup(response.text, 'html.parser')
             maintenance_message = soup.find('h1')
             if maintenance_message and "Ascension DB under maintenance" in maintenance_message.text:
-                print("Maintenance detected. Waiting for 15 minutes before retrying...")
+                print("Maintenance detected. Waiting for 30 minutes before retrying...")
                 return "maintenance"
         else:
             print(f"Failed to get achievement {achievement_id}: Status code {response.status_code}")
@@ -51,8 +51,7 @@ def scrape_and_save_achievements(start_id, end_id):
     # Dictionary to store achievement IDs and names
     achievements = {}
 
-    achievement_id = start_id
-    while achievement_id <= end_id:
+    for achievement_id in range(start_id, end_id + 1):
         name = get_achievement_name(achievement_id)
         if name == "maintenance":
             time.sleep(15 * 60)
@@ -80,12 +79,9 @@ def scrape_and_save_achievements(start_id, end_id):
         # Sleep to avoid overloading the server
         time.sleep(1)
 
-        # Move to the next achievement ID
-        achievement_id += 1
-
 # Specify the range of achievement IDs to scrape
-START_ID = 18936
-END_ID = 35000
+START_ID = 1
+END_ID = 400000
 
 # Call the function to scrape and save achievements
 scrape_and_save_achievements(START_ID, END_ID)

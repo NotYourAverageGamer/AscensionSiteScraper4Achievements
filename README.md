@@ -6,7 +6,6 @@
 
 - **Automated Scraping**: The script automates the process of fetching achievement names and IDs, eliminating the need for manual data collection.
 - **Dynamic ID Retrieval**: Utilizes dynamic scraping techniques to fetch achievement IDs from the Ascension website, ensuring accuracy and adaptability to changes in the website structure.
-- **Data Integrity**: Achievements are fetched directly from the source, ensuring data integrity and reliability.
 - **Flexible Output**: Data is saved into a CSV file, allowing for easy integration into other tools and analysis platforms.
 
 ## 🧑‍💻 Usage

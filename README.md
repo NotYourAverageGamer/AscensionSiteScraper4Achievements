@@ -1,5 +1,7 @@
 # AscensionSiteScraper4Achievements
 
+**THIS PROJECT HAS BEEN ARCHVIED AS I LEARNT THAT A MORE EFFICIENT WAY TO DO THIS IS VIA THE .MPQ FILES**
+
 `Ascension Site Scraper for Achievements` or `A.S.S. 4 Achievements` is a Python script designed to scrape achievement names and IDs from the Ascension database website (db.ascension.gg). It fetches this information and saves it into a CSV file for easy access and manipulation.
 
 ## ✨ Features
